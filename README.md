@@ -16,5 +16,8 @@ $ npm run dev
 ```
 
 ```bash
+#HINT
+before run the app, be sure the api backend services is running on port :8000
+
 Excelent!!! we are ready to test the APP.
 ```

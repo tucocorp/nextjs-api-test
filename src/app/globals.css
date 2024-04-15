@@ -3,7 +3,21 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   color: CanvasText;
   background-color: Canvas;
+}
+
+.bubblechart__wrapper {
+  height: 20rem;
+  width: 100rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.zone__wrapper {
+  height: 10rem;
+  width: 25rem;
+  border-radius: 15px;
+  box-shadow: 4px 4px 4px rgba(0.1, 0.1, 0.1, 0.1);
 }

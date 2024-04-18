@@ -1,50 +1,44 @@
 import api from "@/api";
-
-// const dayjs = require('dayjs-with-plugins');
 import ScatterSimpleChart from "@/app/components/ScatterSimpleChart";
 import Link from "next/link";
 
 export default async function ZonePage({ params: { id } }: { params: { id: string } }) {
 
-  await api.loadZoneData(+id);
+  const zoneData = api.fetchZone(+id);
+  const climatesData = api.fetchClimates(+id);
+  const soilmoisturesData = api.fetchSoilMoistures(+id);
 
-  const zone = await api.fetchZone(+id);
-  const climates = await api.fetchClimates(+id);
-  const soilmoistures = await api.fetchSoilMoistures(+id);
+  const [zone, climates, soilmoistures] =  await Promise.all([zoneData, climatesData, soilmoisturesData]);
 
-  const climateFormattedData = []
-  for(const k in climates){
-    if(climates[k].stm1 != null) {
-      climateFormattedData.push([climates[k].TMS, climates[k].stm1]);
-    }
-  }
+  const climateFormattedData: any[] = [];
+  climates.forEach((climate) => {
+    if(climate.tem1 != null){ climateFormattedData.push([climate.TMS, climate.tem1]) }
+  });
 
-  const soilmoistureFormattedData = []
-  for(const k in soilmoistures){
-    if(soilmoistures[k].smo1 != null) {
-      soilmoistureFormattedData.push([soilmoistures[k].TMS, soilmoistures[k].smo1]);
-    }
-  }
+  const soilmoistureFormattedData: any[] = []
+  soilmoistures.forEach((soilmoisture) => {
+    if(soilmoisture.smo1 !== null) { soilmoistureFormattedData.push([soilmoisture.TMS,  soilmoisture.smo1]) }
+  })
 
   return (
-    <section>
+    <section key={zone.id}>
       <div>
         <Link className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" href={`/`}>Return Home</Link>
       </div>
       <br/>
       <div>Zone Name: {zone.name}</div>
       <br/>
-      <div>Climates</div>
-      <div className="bubblechart__wrapper">
-        <ScatterSimpleChart data={climateFormattedData} />
+      <div>Climates (tmp1)</div>
+      <div key="climates" className="bubblechart__wrapper">
+        <ScatterSimpleChart data={climateFormattedData} min_value={climateFormattedData[0]} />
       </div>
 
       <br/>
       <br/>
 
-      <div>SoilMoistures</div>
-      <div className="bubblechart__wrapper">
-      <ScatterSimpleChart data={soilmoistureFormattedData} />
+      <div>SoilMoistures (smo1)</div>
+      <div key="soilmoistures" className="bubblechart__wrapper">
+      <ScatterSimpleChart data={soilmoistureFormattedData} min_value={soilmoistureFormattedData[0]} />
       </div>
     </section>
   );

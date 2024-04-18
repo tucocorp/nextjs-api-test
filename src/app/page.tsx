@@ -1,22 +1,15 @@
-'use client'
-import api from "@/api";
-import React, { useState } from "react";
+import React from "react";
 import ZonesList from "./components/ZonesList";
+import LoadZonesDataButton from "./components/LoadZonesDataButton";
 
-export default async function Home() {
-  const [showZones, setShow] = useState(false);
-  const listZones = await api.listZones();
 
-  async function LoadExternalData () {
-    await api.loadZonesData();
-    setShow(true);
-  }
+export default function Home() {
 
   return  (
     <section>
-      <button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" onClick={() => LoadExternalData()}>Load External Data</button>
+      <LoadZonesDataButton/>
       <br/><br/>
-      { (showZones || listZones) ? <ZonesList/> : null }
+      <ZonesList/>
     </section>
   );
 }

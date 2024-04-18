@@ -3,29 +3,30 @@ import ReactEChart from  'echarts-for-react';
 import React from 'react';
 
 interface ScatterSimpleEChartOption {
-    data: Array<{ [key: string]: string }>;
+    data: Array<{ [key: string]: string }>,
+    min_value: number
 }
 
-const ScatterSimpleChart: React.FC<ScatterSimpleEChartOption> = (data) => {
-    const [option, setOption] = React.useState({})
-
-    React.useEffect(() => {
-        const scatterSimpleChartOptions = {
-            xAxis: {},
-            yAxis: {},
-            series: [
-                {
+const ScatterSimpleChart: React.FC<ScatterSimpleEChartOption> = (data, min_value) => {
+    const scatterSimpleChartOptions = {
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {},
+        series: [
+            {
                 symbolSize: 10,
                 data: data['data'],
                 type: 'scatter'
-                }
-            ]
-        }
+            }
+        ]
+    }
 
-        setOption(scatterSimpleChartOptions)
-    })
-
-    return <ReactEChart option={option} />;
+    return (
+        <section>
+            <ReactEChart option={scatterSimpleChartOptions} />;
+        </section>
+    )
 }
 
 export default ScatterSimpleChart;
